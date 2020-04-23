@@ -44,10 +44,13 @@
                         <a class="nav-link" href="#" style="user-select: auto;">Accueil</a>
                       </li>
                       <li class="nav-item" style="user-select: auto;">
-                        <a class="nav-link" href="#" style="user-select: auto;">Saisir une fiche</a>
+                        <a class="nav-link" href="{{ path('new_fiche_forfait') }}" style="user-select: auto;">Saisir une fiche forfait</a>
                       </li>
                       <li class="nav-item" style="user-select: auto;">
-                        <a class="nav-link" href="#" style="user-select: auto;">Afficher mes fiches</a>
+                        <a class="nav-link" href="{{ path('new_fiche_hf') }}" style="user-select: auto;">Saisir une fiche hors forfait</a>
+                      </li>
+                      <li class="nav-item" style="user-select: auto;">
+                        <a class="nav-link" href="{{ path('get_fiches') }}" style="user-select: auto;">Afficher mes fiches</a>
                       </li>
                     </ul>
                     <div class="form-inline my-2 my-lg-0" style="user-select: auto;">
