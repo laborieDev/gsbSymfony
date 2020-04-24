@@ -11,6 +11,7 @@ use App\Entity\FicheHorsForfait;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
+use App\Repository\FicheForfaitTypeRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -97,8 +98,28 @@ class VisiteurController extends AbstractController
     /**
      * @Route("/visiteur/mesFiches", name="get_fiches")
      */
-    public function getFiches()
-    {
-        return$this->render('visiteur/getFichesFrais.html.twig');
+    public function getFiches(Security $sec, FicheForfaitTypeRepository $repoType)
+    { 
+        $user = $sec->getUser();
+        $forfaitsType = $repoType->findAll();
+        
+        $forfaitsValue = array();
+
+        foreach($forfaitsType as $type){
+            $forfaitsValue[$type->getIdForfaitType()]['libelle'] = $type->getLibelle();
+            $forfaitsValue[$type->getIdForfaitType()]['nb'] = 0;
+        }
+
+        $fichesForfaits = $user->getFicheForfaits();
+
+        foreach($fichesForfaits as $fiche){
+            $type = $fiche->getIdType()->getIdForfaitType();
+            $forfaitsValue[$type]['nb'] += $fiche->getQte();
+        }
+
+        return $this->render('visiteur/getFichesFrais.html.twig', [
+            'user' => $user,
+            'forfaitsType' => $forfaitsValue
+        ]);
     }
 }
