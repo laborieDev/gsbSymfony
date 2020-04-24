@@ -45,7 +45,9 @@ class VisiteurController extends AbstractController
             $manager->persist($fiche);
             $manager->flush();
 
-            // return $this->redirectToRoute('fiche_forfait_show', ['id' => $fiche->getId()]);
+            return $this->redirectToRoute('get_fiches',[
+                "valid_message" => "Fiche forfait bien ajouté !"
+            ]);
         }
 
         return $this->render('visiteur/gestFicheFrais.html.twig', [
@@ -61,10 +63,12 @@ class VisiteurController extends AbstractController
     public function gestionFicheForfaitHf(FicheHorsForfait $fiche = null, Request $req, ManagerRegistry $mr, Security $sec)
     {
         $gestion = "Modifier";
+        $gestionMessage = "modifiée";
 
         if(!$fiche){
             $fiche = new FicheHorsForfait();
             $gestion = "Ajouter";
+            $gestionMessage = "ajoutée";
         }
 
         $form = $this->createForm(FicheHfType::class, $fiche);
@@ -86,12 +90,35 @@ class VisiteurController extends AbstractController
             $manager->persist($fiche);
             $manager->flush();
 
-            // return $this->redirectToRoute('fiche_forfait_show', ['id' => $fiche->getId()]);
+            return $this->redirectToRoute('get_fiches',[
+                "valid_message" => "Fiche bien $gestionMessage !"
+            ]);
         }
 
         return $this->render('visiteur/gestFicheFraisHf.html.twig', [
             'formFiche' => $form->createView(),
             'gestion' => $gestion
+        ]);
+    }
+
+    /**
+     * @Route("/visiteur/deleteFicheHf/{id}", name="delete_fiche_hf")
+     */
+    public function deleteFicheHf(FicheHorsForfait $fiche, ManagerRegistry $mr, Security $sec){
+
+        if($fiche->getIdVisiteur() === $sec->getUser()){
+            $manager = $mr->getManager();
+            $manager->remove($fiche);
+            $manager->flush();
+        }
+        else{
+            return $this->redirectToRoute('get_fiches',[
+                "error_message" => "Vous ne pouvez pas supprimer une fiche qui n'ai pas à vous !"
+            ]);
+        }
+
+        return $this->redirectToRoute('get_fiches',[
+            "valid_message" => "Fiche bien supprimée !"
         ]);
     }
 
@@ -117,9 +144,24 @@ class VisiteurController extends AbstractController
             $forfaitsValue[$type]['nb'] += $fiche->getQte();
         }
 
-        return $this->render('visiteur/getFichesFrais.html.twig', [
-            'user' => $user,
-            'forfaitsType' => $forfaitsValue
-        ]);
+        if(isset($_GET['error_message']))
+            return $this->render('visiteur/getFichesFrais.html.twig', [
+                'user' => $user,
+                'forfaitsType' => $forfaitsValue,
+                'error_message' => $_GET['error_message']
+            ]);
+
+        if(isset($_GET['valid_message']))
+            return $this->render('visiteur/getFichesFrais.html.twig', [
+                'user' => $user,
+                'forfaitsType' => $forfaitsValue,
+                'valid_message' => $_GET['valid_message']
+            ]);
+        
+        else
+            return $this->render('visiteur/getFichesFrais.html.twig', [
+                'user' => $user,
+                'forfaitsType' => $forfaitsValue
+            ]);
     }
 }
