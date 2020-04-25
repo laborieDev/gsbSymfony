@@ -8,10 +8,10 @@
     {{ form_start(formFiche) }}
 
     <div class="form-group" style="user-select: auto;">
-        {{ form_row(formFiche.idType, {'attr' : {'class':'form-control'}}) }}
+        {{ form_row(formFiche.idType, {'attr' : {'class':'form-control'}, 'label' : 'Forfait concerné'}) }}
     </div>
     <div class="form-group" style="user-select: auto;">
-        {{ form_row(formFiche.qte , {'attr' : {'class':'form-control'}}) }}
+        {{ form_row(formFiche.qte , {'attr' : {'class':'form-control'}, 'label' : 'Quantité'}) }}
     </div>
 
     <button type="submit" class="btn btn-primary">{{ gestion }}</button>

@@ -19,16 +19,11 @@ class VisiteurController extends AbstractController
 {
     /**
      * @Route("/visiteur/newFicheFrais", name="new_fiche_forfait")
-     * @Route("/visiteur/editFicheFrais/{id}", name="edit_fiche_forfait")
      */
-    public function gestionFicheForfait(FicheForfait $fiche = null, Request $req, ManagerRegistry $mr, Security $sec)
+    public function gestionFicheForfait(Request $req, ManagerRegistry $mr, Security $sec)
     {
-        $gestion = "Modifier";
-
-        if(!$fiche){
-            $fiche = new FicheForfait();
-            $gestion = "Ajouter";
-        }
+        $fiche = new FicheForfait();
+        $gestion = "Ajouter";
 
         $form = $this->createForm(FicheFType::class, $fiche);
         

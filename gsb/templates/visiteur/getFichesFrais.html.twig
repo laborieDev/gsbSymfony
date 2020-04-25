@@ -51,6 +51,7 @@
           <tr class="table-dark" style="user-select: auto;">
             <td style="user-select: auto;">Date</td>
             <td style="user-select: auto;">Libellé</td>
+            <td style="user-select: auto;">Etat</td>
             <td style="user-select: auto;">Montant</td>
             <td style="user-select: auto;">Gestion</td>
           </tr>
@@ -58,6 +59,7 @@
           <tr class="table-light" style="user-select: auto;">
             <td style="user-select: auto;">{{ fiche.date | date("d.m.yy") }}</td>
             <td style="user-select: auto;">{{ fiche.libelle }}</td>
+            <td style="user-select: auto;">{{ fiche.idEtat.libelle }}</td>
             <td style="user-select: auto;">{{ fiche.montant|number_format(2, ',', '.') }} €</td>
             <td style="user-select: auto;">
               <a href="{{ path('edit_fiche_hf', {'id': fiche.id}) }}"><i class="fa fa-edit"></i></a>
