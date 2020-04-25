@@ -65,6 +65,13 @@ class VisiteurController extends AbstractController
             $gestion = "Ajouter";
             $gestionMessage = "ajoutée";
         }
+        else{
+            if( ($fiche->getIdVisiteur() !== $sec->getUser()) || ($fiche->getNbJustificatifs() != 0) ){
+                return $this->redirectToRoute('get_fiches',[
+                    "error_message" => "Vous ne pouvez pas modifier cette fiche ! \n Vérifiez que ce soit votre fiche ou qu'elle n'est pas de justificatif enregsitré."
+                ]);
+            }
+        }
 
         $form = $this->createForm(FicheHfType::class, $fiche);
         
@@ -101,14 +108,14 @@ class VisiteurController extends AbstractController
      */
     public function deleteFicheHf(FicheHorsForfait $fiche, ManagerRegistry $mr, Security $sec){
 
-        if($fiche->getIdVisiteur() === $sec->getUser()){
+        if( ($fiche->getIdVisiteur() === $sec->getUser()) && ($fiche->getNbJustificatifs() == 0) ){
             $manager = $mr->getManager();
             $manager->remove($fiche);
             $manager->flush();
         }
         else{
             return $this->redirectToRoute('get_fiches',[
-                "error_message" => "Vous ne pouvez pas supprimer une fiche qui n'ai pas à vous !"
+                "error_message" => "Vous ne pouvez pas supprimer une fiche qui n'ai pas à vous ou qui contient des justificatifs !"
             ]);
         }
 

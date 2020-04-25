@@ -20,14 +20,11 @@
           {% if app.user.isComptable %}
               <div class="collapse navbar-collapse" id="navbarColor03" style="user-select: auto;">
                 <ul class="navbar-nav mr-auto" style="user-select: auto;">
-                  <li class="nav-item active" style="user-select: auto;">
-                    <a class="nav-link" href="/comptable" style="user-select: auto;">Accueil</a>
+                  <li class="nav-item" style="user-select: auto;">
+                    <a class="nav-link" href="#" style="user-select: auto;">Valider une fiche <i class="fa fa-check"></i></a>
                   </li>
                   <li class="nav-item" style="user-select: auto;">
-                    <a class="nav-link" href="#" style="user-select: auto;">Valider une fiche</a>
-                  </li>
-                  <li class="nav-item" style="user-select: auto;">
-                    <a class="nav-link" href="#" style="user-select: auto;">Rembourser une fiche</a>
+                    <a class="nav-link" href="#" style="user-select: auto;">Rembourser une fiche <i class="fa fa-credit-card"></i></a>
                   </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0" style="user-select: auto;">
@@ -41,17 +38,14 @@
 
               <div class="collapse navbar-collapse" id="navbarColor03" style="user-select: auto;">
                     <ul class="navbar-nav mr-auto" style="user-select: auto;">
-                      <li class="nav-item active" style="user-select: auto;">
-                        <a class="nav-link" href="#" style="user-select: auto;">Accueil</a>
+                      <li class="nav-item" style="user-select: auto;">
+                        <a class="nav-link" href="{{ path('new_fiche_forfait') }}" style="user-select: auto;">Saisir une fiche forfait <i class="fa fa-plus"></i> </a>
                       </li>
                       <li class="nav-item" style="user-select: auto;">
-                        <a class="nav-link" href="{{ path('new_fiche_forfait') }}" style="user-select: auto;">Saisir une fiche forfait</a>
+                        <a class="nav-link" href="{{ path('new_fiche_hf') }}" style="user-select: auto;">Saisir une fiche hors forfait <i class="fa fa-plus"></i> </a>
                       </li>
                       <li class="nav-item" style="user-select: auto;">
-                        <a class="nav-link" href="{{ path('new_fiche_hf') }}" style="user-select: auto;">Saisir une fiche hors forfait</a>
-                      </li>
-                      <li class="nav-item" style="user-select: auto;">
-                        <a class="nav-link" href="{{ path('get_fiches') }}" style="user-select: auto;">Afficher mes fiches</a>
+                        <a class="nav-link" href="{{ path('get_fiches') }}" style="user-select: auto;">Afficher mes fiches <i class="fa fa-eye"></i> </a>
                       </li>
                     </ul>
                     <div class="form-inline my-2 my-lg-0" style="user-select: auto;">

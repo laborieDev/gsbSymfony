@@ -53,6 +53,7 @@
             <td style="user-select: auto;">Libellé</td>
             <td style="user-select: auto;">Etat</td>
             <td style="user-select: auto;">Montant</td>
+            <td style="user-select: auto;">Nombre de justificatifs</td>
             <td style="user-select: auto;">Gestion</td>
           </tr>
         {% for fiche in user.ficheHorsForfaits %}
@@ -61,6 +62,7 @@
             <td style="user-select: auto;">{{ fiche.libelle }}</td>
             <td style="user-select: auto;">{{ fiche.idEtat.libelle }}</td>
             <td style="user-select: auto;">{{ fiche.montant|number_format(2, ',', '.') }} €</td>
+            <td style="user-select: auto;">{{ fiche.nbJustificatifs | number_format}}</td>
             <td style="user-select: auto;">
               <a href="{{ path('edit_fiche_hf', {'id': fiche.id}) }}"><i class="fa fa-edit"></i></a>
               <a href="#" onclick="deleteFiche({{fiche.id}})"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
