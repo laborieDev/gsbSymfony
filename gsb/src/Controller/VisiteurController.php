@@ -18,6 +18,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class VisiteurController extends AbstractController
 {
     /**
+     * @Route("/visiteur", name="visiteur")
+     */
+    public function index()
+    {
+        return $this->render('visiteur/index.html.twig');
+    }
+
+    /**
      * @Route("/visiteur/newFicheFrais", name="new_fiche_forfait")
      */
     public function gestionFicheForfait(Request $req, ManagerRegistry $mr, Security $sec)

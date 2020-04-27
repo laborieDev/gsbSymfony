@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="wrapper">
+        <h1>Fiches hors frais</h1>
+    
+        <table class="table table-hover" style="user-select: auto;">
+          <tr class="table-dark" style="user-select: auto;">
+            <td style="user-select: auto;">Date</td>
+            <td style="user-select: auto;">Libellé</td>
+            <td style="user-select: auto;">Montant</td>
+            <td style="user-select: auto;">Nb justificatifs</td>
+            <td style="user-select: auto;">Visiteur</td>
+            <td style="user-select: auto;"><a href="#" onclick="getFilters()"><i class="fa fa-filter"></i> Filtres </a></td>
+          </tr>
+          
+          <tr class="table-success" style="user-select: auto;" id="filtres-section">
+            <td style="user-select: auto;"><input type="text" class="filter-input" id="filter-0" onkeyup="updateFilters()"></td>
+            <td style="user-select: auto;"><input type="text" class="filter-input" id="filter-1" onkeyup="updateFilters()"></td>
+            <td style="user-select: auto;"><input type="text" class="filter-input" id="filter-2" onkeyup="updateFilters()"></td>
+            <td style="user-select: auto;"><input type="text" class="filter-input" id="filter-3" onkeyup="updateFilters()"></td>
+            <td style="user-select: auto;"><input type="text" class="filter-input" id="filter-4" onkeyup="updateFilters()"></td>
+            <td style="user-select: auto;"><a href="#" onclick="deleteFilters()" class="delete-filters-link"><i class="fa fa-times"></i> Effacer</a></td>
+          </tr>
+
+        {% for fiche in fiches %}
+          <tr class="table-light fiches-data" style="user-select: auto;" id="data-{{ fiche.id }}">
+            <td style="user-select: auto;" class="data-0">{{ fiche.date | date("d.m.yy") }}</td>
+            <td style="user-select: auto;" class="data-1">{{ fiche.libelle }}</td>
+            <td style="user-select: auto;" class="data-2">{{ fiche.montant|number_format(2, ',', '.') }} €</td>
+            <td style="user-select: auto;" class="data-3">{{ fiche.nb_justificatifs | number_format}}</td>
+            <td style="user-select: auto;" class="data-4">{{ fiche.username }}</td>
+            <td style="user-select: auto;">
+              <a href="{{ path('edit_fiche_hf', {'id': fiche.id}) }}"><i class="fa fa-file"></i></a>
+              <a href="#" onclick="deleteFiche({{fiche.id}})"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            </td>
+          </tr>
+        {% endfor %}
+        </table>
+    </div>
+    
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    var filters = document.getElementById('filtres-section')
+    filters.style.display = "none";
+    function getFilters(){
+        if(filters.style.display == "none")
+            filters.style.display = "table-row";
+        else
+            filters.style.display = "none";
+    }
+
+    function updateFilters(){
+        valuesFilters = new Array();
+        for(i=0; i<5; i++){
+            var filter = document.getElementById('filter-'+i);
+            valuesFilters[i] = filter.value.toLocaleLowerCase();
+        }
+
+        var fiches = document.getElementsByClassName('fiches-data');
+        for(i = 0; i < fiches.length; i++){
+            fiches[i].style.display = "table-row";
+            for(j = 0; j < 5; j++){
+                if(fiches[i].querySelector('.data-'+j).innerHTML.toLocaleLowerCase().indexOf(valuesFilters[j]) == -1)
+                    fiches[i].style.display="none";
+            }
+        }
+    }
+
+    function deleteFilters(){
+        var filters = document.getElementsByClassName('filter-input');
+        for(i = 0; i < filters.length; i++)
+            filters[i].value = "";
+        updateFilters();
+    }
+</script>
+{% endblock %}

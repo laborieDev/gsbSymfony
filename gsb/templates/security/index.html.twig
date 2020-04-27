@@ -18,7 +18,11 @@
         </div>
     </form>
     {% else %}
-    <h1>Bienvenue {{ app.user.username }}</h1>
+        {% if app.user.isComptable %}
+            <script>document.location.href="/comptable"; </script>
+        {% else %}
+            <script>document.location.href="/visiteur"; </script>
+        {% endif %}
 
     {% endif %}
 

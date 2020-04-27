@@ -56,7 +56,8 @@
             <td style="user-select: auto;">Nombre de justificatifs</td>
             <td style="user-select: auto;">Gestion</td>
           </tr>
-        {% for fiche in user.ficheHorsForfaits %}
+          
+        {% for fiche in user.ficheHorsForfaits|reverse %}
           <tr class="table-light" style="user-select: auto;">
             <td style="user-select: auto;">{{ fiche.date | date("d.m.yy") }}</td>
             <td style="user-select: auto;">{{ fiche.libelle }}</td>

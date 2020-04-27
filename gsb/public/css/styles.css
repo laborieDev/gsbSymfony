@@ -4,3 +4,7 @@
 .container{padding : 20px 0}
 
 .navbar-nav i{margin : 0 10px 0 5px}
+
+.nav-tabs{cursor : pointer}
+
+.delete-filters-link{color : red}
