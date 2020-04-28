@@ -3,8 +3,11 @@
 {% block body %}
 
     <div class="wrapper">
-        <h1>Fiches hors frais</h1>
     
+        {% include '/includes/messages.html.twig' %}
+
+        <h1>Fiches hors frais</h1>
+   
         <table class="table table-hover" style="user-select: auto;">
           <tr class="table-dark" style="user-select: auto;">
             <td style="user-select: auto;">Date</td>
@@ -28,17 +31,19 @@
           <tr class="table-light fiches-data" style="user-select: auto;" id="data-{{ fiche.id }}">
             <td style="user-select: auto;" class="data-0">{{ fiche.date | date("d.m.yy") }}</td>
             <td style="user-select: auto;" class="data-1">{{ fiche.libelle }}</td>
-            <td style="user-select: auto;" class="data-2">{{ fiche.montant|number_format(2, ',', '.') }} €</td>
-            <td style="user-select: auto;" class="data-3">{{ fiche.nb_justificatifs | number_format}}</td>
+            <td style="user-select: auto;" class="data-2">{{ fiche.montant|number_format(2, ',', '.') }} € </td>
+            <td style="user-select: auto;" class="data-3">{{ fiche.nb_justificatifs | number_format}} <a href="{{ path('edit_fiche_hf', {'id': fiche.id}) }}"><i class="fa fa-file"></i></a></td>
             <td style="user-select: auto;" class="data-4">{{ fiche.username }}</td>
             <td style="user-select: auto;">
-              <a href="{{ path('edit_fiche_hf', {'id': fiche.id}) }}"><i class="fa fa-file"></i></a>
-              <a href="#" onclick="deleteFiche({{fiche.id}})"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+              <a href="#" onclick="getModal('validation-modal', {{ fiche.id }}, '{{ fiche.username }}')"><i class="fa fa-check"></i></a>
+              <a href="#" onclick="getModal('cloture-modal', {{ fiche.id }}, '{{ fiche.username }}')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
             </td>
           </tr>
         {% endfor %}
         </table>
     </div>
+
+  {% include '/includes/modaux-validation.html.twig' %}
     
 {% endblock %}
 
@@ -78,3 +83,4 @@
     }
 </script>
 {% endblock %}
+

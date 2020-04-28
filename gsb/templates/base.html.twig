@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.css" />
         <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="/css/styles.css" />
+        <link rel="icon" href="/img/favicon.ico" type="image/x-icon/" />
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -21,10 +22,10 @@
               <div class="collapse navbar-collapse" id="navbarColor03" style="user-select: auto;">
                 <ul class="navbar-nav mr-auto" style="user-select: auto;">
                   <li class="nav-item" style="user-select: auto;">
-                    <a class="nav-link" href="#" style="user-select: auto;">Valider une fiche <i class="fa fa-check"></i></a>
+                    <a class="nav-link" href="{{ path('valid_fiches') }}" style="user-select: auto;">Valider une fiche <i class="fa fa-check"></i></a>
                   </li>
                   <li class="nav-item" style="user-select: auto;">
-                    <a class="nav-link" href="#" style="user-select: auto;">Rembourser une fiche <i class="fa fa-credit-card"></i></a>
+                    <a class="nav-link" href="{{ path('rembourser_fiches') }}" style="user-select: auto;">Rembourser une fiche <i class="fa fa-credit-card"></i></a>
                   </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0" style="user-select: auto;">

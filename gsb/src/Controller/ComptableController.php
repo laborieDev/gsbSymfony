@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\FicheHorsForfait;
+use App\Repository\EtatRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\FicheHorsForfaitRepository;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +17,23 @@ class ComptableController extends AbstractController
     public function index()
     {
         return $this->render('comptable/index.html.twig');
+    }
+
+    /**
+     * @Route("/comptable/validation_fiches/{etat}/{id}", name="valid_fiche")
+     */
+    public function validationFiche(FicheHorsForfait $fiche, EtatRepository $repo, ManagerRegistry $mr, string $etat)
+    {
+        $etat = $repo->findOneBy(['idEtat' => $etat]);
+        $fiche->setIdEtat($etat);
+
+        $manager = $mr->getManager();
+        $manager->persist($fiche);
+        $manager->flush();
+
+        return $this->redirectToRoute('valid_fiches',[
+            "valid_message" => "Action bien prise en compte !"
+        ]);
     }
 
     /**
@@ -35,6 +54,18 @@ class ComptableController extends AbstractController
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $fiches = $stmt->fetchAll();
+
+        if(isset($_GET['valid_message']))
+            return $this->render('comptable/validation.html.twig',[
+                'fiches' => $fiches,
+                'valid_message' => $_GET['valid_message']
+            ]);
+
+        if(isset($_GET['error_message']))
+            return $this->render('comptable/validation.html.twig',[
+                'fiches' => $fiches,
+                'error_message' => $_GET['error_message']
+            ]);
 
         return $this->render('comptable/validation.html.twig',[
             'fiches' => $fiches
