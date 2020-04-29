@@ -61,8 +61,35 @@
   </div>
 </div>
 
+{# AJOUT JUSTIFICATIFS #}
+<div class="modal" id="justificatif-modal"style="user-select: auto;">
+  <div class="modal-dialog" role="document" style="user-select: auto;">
+    <div class="modal-content" style="user-select: auto;">
+      <div class="modal-header" style="user-select: auto;">
+        <h5 class="modal-title" style="user-select: auto;">Remboursement Fiche Hors Forfait</h5>
+        <button onclick="closeModalJustificatif('justificatif-modal')" type="button" class="close" data-dismiss="modal" aria-label="Close" style="user-select: auto;">
+          <span aria-hidden="true" style="user-select: auto;">&times;</span>
+        </button>
+      </div>
+      <form id="justificatif-modal-form" action="/comptable/validation_fiches/add_justificatifs/" method="post">
+        <div class="modal-body" style="user-select: auto;">
+          <p id="justificatif-modal-content" style="user-select: auto;">Veuillez saisir le nombre de justificatifs à ajouter. </p>
+            <div class="form-group" style="user-select: auto;">
+                <input name="nbJustificatif" type="number" class="form-control" placeholder="Nombre justificatifs" style="user-select: auto;" min="1" required>
+            </div>
+        </div>
+        <div class="modal-footer" style="user-select: auto;">
+          <button id="justificatif-modal-button" type="submit" class="btn btn-primary" style="user-select: auto;">Ajouter</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModalJustificatif('justificatif-modal')" data-dismiss="modal" style="user-select: auto;">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
     var content = "";
+    var action = "";
 
     function getModal(id, idFiche, username){
         var modal = document.getElementById(id);
@@ -85,6 +112,19 @@
     function closeModal(id){
         document.getElementById(id).style.display = "none";
         document.getElementById(id+'-content').innerHTML = content;
+    }
+
+    function getModalJustificatifs(id, idFiche){
+        var modal = document.getElementById(id);
+        var modalForm = document.getElementById(id+'-form');
+        modal.style.display='block';
+        action = modalForm.action;    
+        modalForm.action += idFiche;
+    }
+
+    function closeModalJustificatif(id){
+        document.getElementById(id).style.display = "none";
+        document.getElementById(id+'-form').action = action;
     }
 
 </script>

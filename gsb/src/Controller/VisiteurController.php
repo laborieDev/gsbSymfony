@@ -8,6 +8,7 @@ use App\Form\FicheFType;
 use App\Form\FicheHfType;
 use App\Entity\FicheForfait;
 use App\Entity\FicheHorsForfait;
+use App\Repository\EtatRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -74,9 +75,11 @@ class VisiteurController extends AbstractController
             $gestionMessage = "ajoutée";
         }
         else{
-            if( ($fiche->getIdVisiteur() !== $sec->getUser()) || ($fiche->getNbJustificatifs() != 0) ){
+            if( ($fiche->getIdVisiteur() !== $sec->getUser()) || ($fiche->getNbJustificatifs() != 0) || ($fiche->getIdEtat()->getIdEtat() != "CR") ){
                 return $this->redirectToRoute('get_fiches',[
-                    "error_message" => "Vous ne pouvez pas modifier cette fiche ! \n Vérifiez que ce soit votre fiche ou qu'elle n'est pas de justificatif enregsitré."
+                    "error_message" => "Vous ne pouvez pas modifier cette fiche ! <br>
+                                        Vérifiez que ce soit votre fiche ou qu'elle n'est pas de justificatif enregsitré. <br> 
+                                        Si cette fiche n'est pas en état 'Fiche créée', vous ne pouvez pas la modifier !"
                 ]);
             }
         }
@@ -109,6 +112,32 @@ class VisiteurController extends AbstractController
             'formFiche' => $form->createView(),
             'gestion' => $gestion
         ]);
+    }
+
+    /**
+     * @Route("/visiteur/clotureFicheHf/{id}", name="cloture_fiche_hf")
+     */
+    public function clotureFicheForfaitHf(FicheHorsForfait $fiche, ManagerRegistry $mr, EtatRepository $repo, Security $sec)
+    {
+        if( ($fiche->getIdVisiteur() !== $sec->getUser()) || ($fiche->getIdEtat()->getIdEtat() != "CR") ){
+            return $this->redirectToRoute('get_fiches',[
+                "error_message" => "Vous ne pouvez pas clôturer cette fiche ! <br>
+                                    Vérifiez que ce soit votre fiche. <br> 
+                                    Si cette fiche n'est pas en état 'Fiche créée', vous ne pouvez pas la clôturer !"
+            ]);
+        }
+
+        $etat = $repo->findOneBy(['idEtat' => 'CL']);
+        $fiche->setIdEtat($etat);
+
+        $manager = $mr->getManager();
+        $manager->persist($fiche);
+        $manager->flush();
+
+        return $this->redirectToRoute('get_fiches',[
+            "valid_message" => "Fiche bien clôturée !"
+        ]);
+
     }
 
     /**

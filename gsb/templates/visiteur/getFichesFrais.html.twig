@@ -52,6 +52,9 @@
             <td style="user-select: auto;">{{ fiche.montant|number_format(2, ',', '.') }} €</td>
             <td style="user-select: auto;">{{ fiche.nbJustificatifs | number_format}}</td>
             <td style="user-select: auto;">
+              {% if fiche.idEtat.idEtat == "CR" %}
+                <a href="{{ path('cloture_fiche_hf', {'id': fiche.id}) }}"><i class="fa fa-check"></i></a>
+              {% endif %}
               <a href="{{ path('edit_fiche_hf', {'id': fiche.id}) }}"><i class="fa fa-edit"></i></a>
               <a href="#" onclick="deleteFiche({{fiche.id}})"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
             </td>

@@ -20,11 +20,42 @@ class ComptableController extends AbstractController
     }
 
     /**
+     * @Route("/comptable/validation_fiches/add_justificatifs/{id}", name="add_justificatifs")
+     */
+    public function addJustificatifs(FicheHorsForfait $fiche, ManagerRegistry $mr)
+    {
+        if( (!(isset($_POST['nbJustificatif'])))
+            || ($fiche->getIdEtat()->getIdEtat() != "CR") )
+            
+            return $this->redirectToRoute('valid_fiches',[
+                "error_message" => "Cette action n'est pas possible !"
+            ]);
+        
+        $nbJustificatifs = $fiche->getnbJustificatifs() + $_POST['nbJustificatif'];
+        $fiche->setnbJustificatifs($nbJustificatifs);
+
+        $manager = $mr->getManager();
+        $manager->persist($fiche);
+        $manager->flush();
+
+        return $this->redirectToRoute('valid_fiches',[
+            "valid_message" => "Action bien prise en compte !"
+        ]);
+    }
+
+
+    /**
      * @Route("/comptable/validation_fiches/{etat}/{id}", name="valid_fiche")
      */
     public function validationFiche(FicheHorsForfait $fiche, EtatRepository $repo, ManagerRegistry $mr, string $etat)
     {
         $etat = $repo->findOneBy(['idEtat' => $etat]);
+
+        if($etat == "")
+            return $this->redirectToRoute('valid_fiches',[
+                "error_message" => "Cette action n'est pas possible !"
+            ]);
+
         $fiche->setIdEtat($etat);
 
         $manager = $mr->getManager();
@@ -46,7 +77,7 @@ class ComptableController extends AbstractController
         $sql = "
             SELECT f.id, f.libelle, f.montant, f.date, f.nb_justificatifs, u.username
             FROM fiche_hors_forfait f, etat e, user u
-            WHERE e.id_etat = 'CR'
+            WHERE e.id_etat = 'CL'
             AND e.id = f.id_etat_id
             AND u.id = f.id_visiteur_id
             ORDER BY f.id DESC
