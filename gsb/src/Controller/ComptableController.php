@@ -25,7 +25,7 @@ class ComptableController extends AbstractController
     public function addJustificatifs(FicheHorsForfait $fiche, ManagerRegistry $mr)
     {
         if( (!(isset($_POST['nbJustificatif'])))
-            || ($fiche->getIdEtat()->getIdEtat() != "CR") )
+            || ($fiche->getIdEtat()->getIdEtat() != "CL") )
             
             return $this->redirectToRoute('valid_fiches',[
                 "error_message" => "Cette action n'est pas possible !"
@@ -43,6 +43,20 @@ class ComptableController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/comptable/validation_fiches/DELETE/{id}", name="c_delete_fiche")
+     */
+    public function deleteFicheComptable(FicheHorsForfait $fiche, ManagerRegistry $mr)
+    {
+        $manager = $mr->getManager();
+        $manager->remove($fiche);
+        $manager->flush();
+
+        return $this->redirectToRoute('valid_fiches',[
+            "valid_message" => "Fiche bien supprimée !"
+        ]);
+    }
 
     /**
      * @Route("/comptable/validation_fiches/{etat}/{id}", name="valid_fiche")

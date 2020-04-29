@@ -145,14 +145,16 @@ class VisiteurController extends AbstractController
      */
     public function deleteFicheHf(FicheHorsForfait $fiche, ManagerRegistry $mr, Security $sec){
 
-        if( ($fiche->getIdVisiteur() === $sec->getUser()) && ($fiche->getNbJustificatifs() == 0) ){
+        if( ($fiche->getIdVisiteur() === $sec->getUser()) && ($fiche->getNbJustificatifs() == 0) && ($fiche->getIdEtat()->getIdEtat() == "CR") ){
             $manager = $mr->getManager();
             $manager->remove($fiche);
             $manager->flush();
         }
         else{
             return $this->redirectToRoute('get_fiches',[
-                "error_message" => "Vous ne pouvez pas supprimer une fiche qui n'ai pas à vous ou qui contient des justificatifs !"
+                "error_message" => 
+                    "Vous ne pouvez pas supprimer une fiche qui n'ai pas à vous ou qui contient des justificatifs ! <br> 
+                    Une fiche avec un autre état que 'Fiche créée' ne peut pas être supprimer !"
             ]);
         }
 

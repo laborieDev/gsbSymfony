@@ -36,7 +36,7 @@
             <td style="user-select: auto;" class="data-4">{{ fiche.username }}</td>
             <td style="user-select: auto;">
               <a href="#" onclick="getModal('validation-modal', {{ fiche.id }}, '{{ fiche.username }}')"><i class="fa fa-check"></i></a>
-              <a href="#" onclick="getModal('cloture-modal', {{ fiche.id }}, '{{ fiche.username }}')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+              <a href="#" onclick="getModal('delete-modal', {{ fiche.id }}, '{{ fiche.username }}')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
             </td>
           </tr>
         {% endfor %}
