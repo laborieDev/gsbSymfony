@@ -26,32 +26,4 @@ class SecurityController extends AbstractController
      * @Route("/deconnexion", name="security_logout")
      */
     public function logout(){}
-
-    /**
-     * @Route("/admin/newuser", name="new_user")
-     */
-    public function registration(Request $req, ManagerRegistry $mr, UserPasswordEncoderInterface $encoder)
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-
-        $form->handleRequest($req);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $hash = $encoder->encodePassword($user, $user->getPassword());
-
-            $user->setPassword($hash);
-            $user->setDateEmbauche(new \DateTime());
-            $user->setIsComptable(false);
-            $manager = $mr->getManager();
-            $manager->persist($user);
-            $manager->flush();
-
-            return $this->render('navbar/index.html.twig');
-
-        }        
-        return $this->render('security/newuser.html.twig', [
-            "form" => $form->createView()
-        ]);
-    }
 }
